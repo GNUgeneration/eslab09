@@ -65,7 +65,7 @@ void SysTick_Init(void){
 }
 unsigned long Led;
 void Delay(void){unsigned long volatile time;
-  time = 80000; //eja            //160000; // 0.1sec
+  time = 80000; //eja
   while(time){
    time--;
   }
@@ -81,24 +81,21 @@ int main(void){  unsigned long i,last,now;
   i = 0;          // array index
   last = NVIC_ST_CURRENT_R;
   EnableInterrupts();           // enable interrupts for the grader
-  last = GPIO_PORTF_DATA_R&0x13; //eja
+	last = GPIO_PORTF_DATA_R&0x13; //eja
 	while(1){
 		if ((GPIO_PORTF_DATA_R&0x11) == 0x11) { //eja
 			GPIO_PORTF_DATA_R = GPIO_PORTF_DATA_R & ~0x02; //eja
-		}else { //eja
+		}else{
 			GPIO_PORTF_DATA_R = GPIO_PORTF_DATA_R ^ 0x02; //eja
 		}
 		
-    /*Led = GPIO_PORTF_DATA_R;   // read previous
-    Led = Led^0x02;            // toggle red LED
-    GPIO_PORTF_DATA_R = Led;   // output 
     if(i<50){
       now = NVIC_ST_CURRENT_R;
       Time[i] = (last-now)&0x00FFFFFF;  // 24-bit time difference
       Data[i] = GPIO_PORTF_DATA_R&0x02; // record PF1
       last = now;
       i++;
-	}*/
+	}
     Delay();
   }
 }
