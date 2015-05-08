@@ -81,8 +81,15 @@ int main(void){  unsigned long i,last,now;
   i = 0;          // array index
   last = NVIC_ST_CURRENT_R;
   EnableInterrupts();           // enable interrupts for the grader
-  while(1){
-    Led = GPIO_PORTF_DATA_R;   // read previous
+  last = GPIO_PORTF_DATA_R&0x13; //eja
+	while(1){
+		if ((GPIO_PORTF_DATA_R&0x11) == 0x11) { //eja
+			GPIO_PORTF_DATA_R = GPIO_PORTF_DATA_R & ~0x02; //eja
+		}else { //eja
+			GPIO_PORTF_DATA_R = GPIO_PORTF_DATA_R ^ 0x02; //eja
+		}
+		
+    /*Led = GPIO_PORTF_DATA_R;   // read previous
     Led = Led^0x02;            // toggle red LED
     GPIO_PORTF_DATA_R = Led;   // output 
     if(i<50){
@@ -91,7 +98,7 @@ int main(void){  unsigned long i,last,now;
       Data[i] = GPIO_PORTF_DATA_R&0x02; // record PF1
       last = now;
       i++;
-    }
+	}*/
     Delay();
   }
 }
