@@ -65,7 +65,7 @@ void SysTick_Init(void){
 }
 unsigned long Led;
 void Delay(void){unsigned long volatile time;
-  time = 160000; // 0.1sec
+  time = 80000; //eja            //160000; // 0.1sec
   while(time){
    time--;
   }
