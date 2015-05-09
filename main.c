@@ -41,7 +41,6 @@ This means no adjacent elements in the array should be equal.
 
 */
 
-
 void PortF_Init(void){ volatile unsigned long delay;
   SYSCTL_RCGC2_R |= 0x00000020;     // 1) activate clock for Port F
   delay = SYSCTL_RCGC2_R;           // allow time for clock to start
@@ -70,36 +69,33 @@ void Delay(void){unsigned long volatile time;
    time--;
   }
 }
-// first data point is wrong, the other 49 will be correct
-unsigned long Time[50];
+
 // you must leave the Data array defined exactly as it is
 unsigned long Data[50];
 int main(void){  unsigned long i,last,now;
   TExaS_Init(SW_PIN_PF40, LED_PIN_PF1);  // activate grader and set system clock to 16 MHz
   PortF_Init();   // initialize PF1 to output
-  SysTick_Init(); // initialize SysTick, runs at 16 MHz
   i = 0;          // array index
   last = NVIC_ST_CURRENT_R;
   EnableInterrupts();           // enable interrupts for the grader
-	last = GPIO_PORTF_DATA_R&0x13; //eja
-	while(1){
+	//last = GPIO_PORTF_DATA_R&0x13; //eja
+  while(1){
 		if ((GPIO_PORTF_DATA_R&0x11) == 0x11) { //eja
 			GPIO_PORTF_DATA_R = GPIO_PORTF_DATA_R & ~0x02; //eja
-		}else{
+		}else { //eja
 			GPIO_PORTF_DATA_R = GPIO_PORTF_DATA_R ^ 0x02; //eja
-		}
-		
+		} //eja
     if(i<50){
       now = NVIC_ST_CURRENT_R;
-      Time[i] = (last-now)&0x00FFFFFF;  // 24-bit time difference
-      Data[i] = GPIO_PORTF_DATA_R&0x02; // record PF1
+			if  ((GPIO_PORTF_DATA_R != 0x11)) { //eja
+					Data[i] = GPIO_PORTF_DATA_R&0x13; //eja rewrote 0x13 was 0x02// record PF1
+			} //eja
       last = now;
       i++;
-	}
+    }
     Delay();
   }
 }
-
 
 // Color    LED(s) PortF
 // dark     ---    0
