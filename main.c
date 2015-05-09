@@ -87,9 +87,12 @@ int main(void){  unsigned long i,last,now;
 		} //eja
     if(i<50){
       now = NVIC_ST_CURRENT_R;
-			if  ((GPIO_PORTF_DATA_R != 0x11)) { //eja
+				if ((GPIO_PORTF_DATA_R&0x11) == 0x11) { //eja
+					continue; //eja
+				}
+				if  ((GPIO_PORTF_DATA_R != 0x11)) { //eja
 					Data[i] = GPIO_PORTF_DATA_R&0x13; //eja rewrote 0x13 was 0x02// record PF1
-			} //eja
+				} //eja
       last = now;
       i++;
     }
